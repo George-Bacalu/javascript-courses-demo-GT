@@ -1,0 +1,22 @@
+<%- include("partials/header") %>
+
+  <h1 class="my-3"><%= course.title %></h1>
+  <a class="btn btn-secondary" href="/courses">View all</a>
+  <a class="btn btn-success mx-1" href="/edit">Edit</a>
+  <a class="btn btn-warning mx-1" id="delete-btn" data-parameter="<%=course._id %>">Delete</a>
+  <p class="text-muted my-4"><%= course.date %></p>
+  <p><%= course.description %></p>
+  </div>
+
+  <script>
+    const deleteButton = document.querySelector("#delete-btn");
+    deleteButton.addEventListener("click", (event) => {
+      const endpoint = `/courses/${deleteButton.dataset.parameter}`;
+      fetch(endpoint, {method: "DELETE"})
+        .then((res) => res.json())
+        .then(data => window.location.href = data.redirect)
+        .catch(err => console.error(err)); 
+    })
+  </script>
+
+  <%- include("partials/footer") %>

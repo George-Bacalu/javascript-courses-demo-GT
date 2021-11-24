@@ -1,0 +1,24 @@
+<%- include("partials/header") %>
+
+  <h1 class="my-4">JS Courses Platform</h1>
+  <a href="/create" class="btn btn-primary">Create new course</a>
+  <div class="row gx-5 my-4">
+    <% if(courses.length > 0) { %>
+      <% courses.forEach(course=> { %>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card">
+            <img src="<%= course.image %>" class="card-img-top bg-secondary" alt="JS" style="height: 200px" />
+            <div class="card-body">
+              <h5 class="card-title"><%= course.title %></h5>
+              <p class="card-text" style="height: 75px"><%= course.description.substring(0, 100)%>...</p>
+              <a href="/courses/<%= course.id %>" class="btn btn-primary">Open Course</a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+    <% } else { %>
+      <h1>No courses found! Start adding some?</h1>
+    <% } %>
+  </div>
+
+  <%- include("partials/header") %>
