@@ -1,24 +1,10 @@
 <%- include("partials/header") %>
 
-  <h1 class="my-3">Create a new course</h1>
-  <form action="/create" method="post" class="my-4">
-    <div class="my-4">
-      <a class="btn btn-secondary" href="/courses">Back</a>
-      <button type="submit" class="btn btn-primary">Create</button>
-    </div>
-    <div class="mb-3">
-      <label for="title" class="form-label">Course title</label>
-      <input type="text" class="form-control" id="title" name="title" />
-    </div>
-    <div class="mb-3">
-      <label for="image" class="form-label">Course image</label>
-      <input type="text" class="form-control" id="image" name="image" />
-    </div>
-    <div class="mb-3">
-      <label for="description" class="form-label">Course description</label>
-      <textarea class="form-control" id="description" name="description" rows="5" cols="30" ></textarea>
+  <h1 class="my-4">Create a new course</h1>
+  <form action="/courses" method="POST" class="my-4">
+    <%- include("_form_fields") %>
     </div>
   </form>
   </div>
 
-  <%- include("partials/header") %>
+  <%- include("partials/footer") %>
