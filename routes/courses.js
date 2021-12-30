@@ -1,8 +1,12 @@
 const express = require("express");
 const Course = require("../models/course");
+const Category = require("../models/category");
 const router = express.Router();
 
-router.get("/create", (req, res) => res.render("create", { course: new Course() }));
+router.get("/create", async (req, res) => {
+  const categories = await Category.find().sort({ createdAt: -1 });
+  res.render("create", { course: new Course(), categories });
+});
 
 router.get("/edit/:id", async (req, res) => {
   const course = await Course.findById(req.params.id);
@@ -11,7 +15,7 @@ router.get("/edit/:id", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
+    const course = await Course.findById(req.params.id).populate("category");
     if (course) res.render("course", { course });
     else res.redirect("/");
   } catch (err) {
@@ -21,8 +25,9 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const { title, image, description } = req.body;
-  let course = new Course({ title, image, description });
+  const { category: categoryName, title, image, description } = req.body;
+  const category = categoryName && (await Category.findOne({ name: categoryName }));
+  let course = new Course({ title, image, description, category: category?.id });
   try {
     course = await course.save();
     res.redirect(`/courses/${course.id}`);
@@ -33,12 +38,11 @@ router.post("/", async (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  
   let course = await Course.findById(req.params.id);
-  const { title, description, markdown } = req.body;
-    course.title = title;
-    course.description = description;
-    course.markdown = markdown;
+  const { title, description, image } = req.body;
+  course.title = title;
+  course.description = description;
+  course.image = image;
   try {
     course = await course.save();
     res.redirect(`/courses/${course.id}`);
@@ -57,24 +61,5 @@ router.delete("/:id", async (req, res) => {
     res.status(404);
   }
 });
-
-/*
-function saveCourseAndRedirect(path) {
-  return async (req, res) => {
-    let course = req.course;
-    const { title, description, markdown } = req.body;
-    course.title = title;
-    course.description = description;
-    course.markdown = markdown;
-    try {
-      course = await course.save();
-      res.redirect(`/courses/${course.id}`);
-    } catch (error) {
-      console.log(error);
-      res.render(`courses/${path}`, { course });
-    }
-  };
-}
-*/
 
 module.exports = router;

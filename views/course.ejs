@@ -1,6 +1,6 @@
 <%- include("partials/header") %>
 
-  <h1 class="my-3"><%= course.title %></h1>
+  <h1 class="my-3"><%= course.title %> <span class="badge bg-info"><%= course.category?.name %></span></h1>
   <p class="text-muted my-3">
     <%= course.createdAt.toLocaleDateString("ro") %> <%= course.createdAt.toLocaleTimeString("ro") %>
   </p>

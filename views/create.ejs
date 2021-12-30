@@ -2,9 +2,30 @@
 
   <h1 class="my-4">Create a new course</h1>
   <form action="/courses" method="POST" class="my-4">
-    <%- include("_form_fields") %>
+    <a href="/" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">Save</button>
+
+    <div class="form-group my-3">
+      <label for="category" class="form-label">Category</label>
+      <input type="text" class="form-control" id="category" name="category" placeholder="Enter category name" list="categories" required />
+      <datalist id="categories">
+        <% categories.forEach(category => { %>
+          <option value="<%= category.name %>">
+        <% }) %>
+      </datalist>
+    </div>
+    <div class="form-group my-3">
+      <label for="title" class="form-label">Course title</label>
+      <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="<%= course.title %>" required />
+    </div>
+    <div class="form-group my-3">
+      <label for="image" class="form-label">Course image</label>
+      <input type="text" class="form-control" id="image" name="image" placeholder="Enter image url" value="<%= course.image %>" required />
+    </div>
+    <div class="form-group my-3">
+      <label for="description" class="form-label">Course description</label>
+      <textarea class="form-control" id="description" name="description" placeholder="Enter description" rows="5" required><%= course.description %></textarea>
     </div>
   </form>
-  </div>
 
   <%- include("partials/footer") %>

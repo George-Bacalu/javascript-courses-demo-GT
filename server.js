@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Course = require("./models/course");
+const Category = require("./models/category");
 const ejs = require("ejs");
 const morgan = require("morgan");
 const methodOverride = require("method-override");
 
 const courseRouter = require("./routes/courses");
+const categoryRouter = require("./routes/categories");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -26,11 +28,13 @@ app.use(morgan("dev"));
 app.use(methodOverride("_method"));
 
 app.use("/courses", courseRouter);
+app.use("/categories", categoryRouter);
 
 app.get("/", async (req, res) => {
   try {
     const courses = await Course.find().sort({ createdAt: -1 });
-    res.render("index", { courses });
+    const categories = await Category.find().sort({ createdAt: -1 });
+    res.render("index", { courses, categories });
   } catch (err) {
     console.error(err);
     res.sendStatus(404);
